@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/run_graph"
+    app:startDestination="@id/mapFragment">
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="busan.swidea.gachijupging.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_runningFragment_to_recordFragment"
+            app:destination="@id/recordFragment" />
+        <action
+            android:id="@+id/action_runningFragment_to_myInfoFragment"
+            app:destination="@id/myInfoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recordFragment"
+        android:name="busan.swidea.gachijupging.RecordFragment"
+        android:label="fragment_record"
+        tools:layout="@layout/fragment_record" >
+        <action
+            android:id="@+id/action_recordFragment_to_myInfoFragment"
+            app:destination="@id/myInfoFragment" />
+        <action
+            android:id="@+id/action_recordFragment_to_runningFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myInfoFragment"
+        android:name="busan.swidea.gachijupging.MyInfoFragment"
+        android:label="fragment_my_info"
+        tools:layout="@layout/fragment_my_info" >
+        <action
+            android:id="@+id/action_myInfoFragment_to_runningFragment"
+            app:destination="@id/mapFragment" />
+        <action
+            android:id="@+id/action_myInfoFragment_to_recordFragment"
+            app:destination="@id/recordFragment" />
+    </fragment>
+</navigation>

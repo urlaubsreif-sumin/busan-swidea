@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.GachiJupging" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#7398AA</item>
+        <item name="colorPrimaryVariant">#98B8BF</item>
+        <item name="colorOnPrimary">#C3D3D6</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#EDCFC0</item>
+        <item name="colorSecondaryVariant">#FEF3D2</item>
+        <item name="colorOnSecondary">#D5DBE4</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+        <!-- Customize your theme here. -->
+    </style>
+</resources>
