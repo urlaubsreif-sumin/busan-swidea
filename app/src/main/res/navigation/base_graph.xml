@@ -6,12 +6,12 @@
     app:startDestination="@id/mainFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="busan.swidea.gachijupging.LoginFragment"
+        android:name="busan.swidea.gachijupging.view.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" />
     <fragment
         android:id="@+id/mainFragment"
-        android:name="busan.swidea.gachijupging.MainFragment"
+        android:name="busan.swidea.gachijupging.view.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main" >
         <action

@@ -1,4 +1,4 @@
-package busan.swidea.gachijupging
+package busan.swidea.gachijupging.view
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -7,11 +7,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.webkit.PermissionRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import busan.swidea.gachijupging.R
 import busan.swidea.gachijupging.databinding.FragmentMapBinding
+import busan.swidea.gachijupging.model.Map
 
 /**
  * A simple [Fragment] subclass.
@@ -33,7 +34,8 @@ class MapFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentMapBinding>(inflater, R.layout.fragment_map, container, false)
+        binding = DataBindingUtil.inflate<FragmentMapBinding>(inflater,
+            R.layout.fragment_map, container, false)
         return binding.root
     }
 
@@ -72,32 +74,56 @@ class MapFragment : Fragment() {
 
 
     private fun setMapReady() {
-        if(checkPermission()) {
+        if(hasPermission()) {
             map = Map()
             binding.mapView.getMapAsync(map.mapReadyCallback)
         }
     }
 
 
-    private fun checkPermission(): Boolean {
-        var isPermit = false
-        val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            isGranted: Boolean ->
-            isPermit = isGranted
-        }
-
-        // [START maps_check_location_permission]
-        if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-            == PackageManager.PERMISSION_GRANTED) {
-            isPermit = true
+    private fun hasPermission(): Boolean {
+        if (checkPermission()) {
             return true
         } else {
-            // Permission to access the location is missing. Show rationale and request permission
-            requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+            val result = requestPermission()
+            return result
         }
-        // [END maps_check_location_permission]
+    }
+
+    private fun checkPermission(): Boolean {
+        if(checkCoarseLocationPermission() && checkFineLocationPermission()) {
+            return true
+        }
+        return false
+    }
+
+    private fun checkCoarseLocationPermission(): Boolean {
+        if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED)
+            return true
+        return false
+    }
+
+    private fun checkFineLocationPermission(): Boolean {
+        if (ContextCompat.checkSelfPermission(this.requireContext(), Manifest.permission.ACCESS_FINE_LOCATION)
+            == PackageManager.PERMISSION_GRANTED)
+                return true
+        return false
+    }
+
+    private fun requestPermission(): Boolean {
+        var isPermit = false
+        val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) {
+                isGranted: Boolean ->
+            isPermit = isGranted
+        }
+        requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
+        requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         return isPermit
     }
+
+
+
 
     companion object {
 

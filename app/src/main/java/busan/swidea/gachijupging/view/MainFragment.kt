@@ -1,4 +1,4 @@
-package busan.swidea.gachijupging
+package busan.swidea.gachijupging.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import busan.swidea.gachijupging.R
 import busan.swidea.gachijupging.databinding.FragmentMainBinding
 
 
@@ -17,13 +18,15 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentMainBinding>(inflater, R.layout.fragment_main, container, false)
+        binding = DataBindingUtil.inflate<FragmentMainBinding>(inflater,
+            R.layout.fragment_main, container, false)
 
         // Inflate the layout for this fragment
         return binding.root

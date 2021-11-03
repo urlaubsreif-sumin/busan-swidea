@@ -1,4 +1,4 @@
-package busan.swidea.gachijupging
+package busan.swidea.gachijupging.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

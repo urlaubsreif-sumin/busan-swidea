@@ -1,4 +1,4 @@
-package busan.swidea.gachijupging
+package busan.swidea.gachijupging.model
 
 import android.annotation.SuppressLint
 import com.google.android.gms.maps.GoogleMap

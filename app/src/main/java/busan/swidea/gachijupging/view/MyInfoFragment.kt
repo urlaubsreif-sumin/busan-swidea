@@ -1,4 +1,4 @@
-package busan.swidea.gachijupging
+package busan.swidea.gachijupging.view
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import busan.swidea.gachijupging.R
 import busan.swidea.gachijupging.databinding.FragmentMyInfoBinding
 
 
@@ -26,7 +27,8 @@ class MyInfoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentMyInfoBinding>(inflater, R.layout.fragment_my_info, container, false)
+        binding = DataBindingUtil.inflate<FragmentMyInfoBinding>(inflater,
+            R.layout.fragment_my_info, container, false)
 
         // Inflate the layout for this fragment
         return binding.root

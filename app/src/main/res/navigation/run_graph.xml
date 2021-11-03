@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mapFragment"
-        android:name="busan.swidea.gachijupging.MapFragment"
+        android:name="busan.swidea.gachijupging.view.MapFragment"
         android:label="fragment_map"
         tools:layout="@layout/fragment_map" >
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/recordFragment"
-        android:name="busan.swidea.gachijupging.RecordFragment"
+        android:name="busan.swidea.gachijupging.view.RecordFragment"
         android:label="fragment_record"
         tools:layout="@layout/fragment_record" >
         <action
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/myInfoFragment"
-        android:name="busan.swidea.gachijupging.MyInfoFragment"
+        android:name="busan.swidea.gachijupging.view.MyInfoFragment"
         android:label="fragment_my_info"
         tools:layout="@layout/fragment_my_info" >
         <action
