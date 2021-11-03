@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import busan.swidea.gachijupging.databinding.FragmentMyInfoBinding
 
 
 /**
@@ -14,6 +16,8 @@ import android.view.ViewGroup
  */
 class MyInfoFragment : Fragment() {
 
+    private lateinit var binding: FragmentMyInfoBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -22,8 +26,10 @@ class MyInfoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = DataBindingUtil.inflate<FragmentMyInfoBinding>(inflater, R.layout.fragment_my_info, container, false)
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_my_info, container, false)
+        return binding.root
     }
 
     companion object {

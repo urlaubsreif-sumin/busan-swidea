@@ -5,6 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import busan.swidea.gachijupging.databinding.FragmentRecordBinding
 
 
 /**
@@ -13,6 +15,7 @@ import android.view.ViewGroup
  * create an instance of this fragment.
  */
 class RecordFragment : Fragment() {
+    private lateinit var binding: FragmentRecordBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +26,9 @@ class RecordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = DataBindingUtil.inflate<FragmentRecordBinding>(inflater, R.layout.fragment_record, container, false)
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_record, container, false)
+        return binding.root
     }
 
     companion object {
