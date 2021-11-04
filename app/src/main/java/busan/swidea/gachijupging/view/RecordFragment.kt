@@ -29,6 +29,10 @@ class RecordFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate<FragmentRecordBinding>(inflater,
             R.layout.fragment_record, container, false)
+
+        binding.apply{
+            lifecycleOwner = this@RecordFragment
+        }
         // Inflate the layout for this fragment
         return binding.root
     }

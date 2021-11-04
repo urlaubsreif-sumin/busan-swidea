@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import busan.swidea.gachijupging.R
+import busan.swidea.gachijupging.databinding.FragmentLoginBinding
 
 
 /**
@@ -14,6 +16,9 @@ import busan.swidea.gachijupging.R
  * create an instance of this fragment.
  */
 class LoginFragment : Fragment() {
+
+    private lateinit var binding: FragmentLoginBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -23,8 +28,12 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+        binding.apply{
+            lifecycleOwner = this@LoginFragment
+        }
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_login, container, false)
+        return binding.root
     }
 
     companion object {

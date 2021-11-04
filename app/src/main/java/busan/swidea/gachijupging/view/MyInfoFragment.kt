@@ -30,6 +30,9 @@ class MyInfoFragment : Fragment() {
         binding = DataBindingUtil.inflate<FragmentMyInfoBinding>(inflater,
             R.layout.fragment_my_info, container, false)
 
+        binding.apply {
+            lifecycleOwner = this@MyInfoFragment
+        }
         // Inflate the layout for this fragment
         return binding.root
     }

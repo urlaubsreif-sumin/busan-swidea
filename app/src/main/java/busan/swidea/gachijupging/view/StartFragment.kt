@@ -10,10 +10,12 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import busan.swidea.gachijupging.R
 import busan.swidea.gachijupging.databinding.FragmentStartBinding
 import busan.swidea.gachijupging.model.Map
+import busan.swidea.gachijupging.viewmodel.TimerViewModel
 
 /**
  * A simple [Fragment] subclass.
@@ -36,6 +38,12 @@ class StartFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate<FragmentStartBinding>(inflater,
             R.layout.fragment_start, container, false)
+
+        binding.apply {
+            lifecycleOwner = this@StartFragment
+            timerViewModel = TimerViewModel
+        }
+
         return binding.root
     }
 
@@ -125,7 +133,13 @@ class StartFragment : Fragment() {
         binding.startBtn.setOnClickListener{
             val action = MainFragmentDirections.actionMainFragmentToRunFragment()
             requireActivity().findNavController(R.id.nav_host_fragment).navigate(action)
+            TimerViewModel.timerStart()
         }
+    }
+
+    private fun setTimerStart() {
+        val timerViewModel = ViewModelProvider(requireActivity()).get(TimerViewModel::class.java)
+
     }
 
 

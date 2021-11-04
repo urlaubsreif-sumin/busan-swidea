@@ -28,6 +28,9 @@ class MainFragment : Fragment() {
         binding = DataBindingUtil.inflate<FragmentMainBinding>(inflater,
             R.layout.fragment_main, container, false)
 
+        binding.apply{
+            lifecycleOwner = this@MainFragment
+        }
         // Inflate the layout for this fragment
         return binding.root
     }

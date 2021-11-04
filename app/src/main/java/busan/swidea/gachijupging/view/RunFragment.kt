@@ -10,6 +10,7 @@ import androidx.navigation.findNavController
 import busan.swidea.gachijupging.R
 import busan.swidea.gachijupging.databinding.FragmentRunBinding
 import busan.swidea.gachijupging.model.Map
+import busan.swidea.gachijupging.viewmodel.TimerViewModel
 
 
 class RunFragment : Fragment() {
@@ -26,6 +27,12 @@ class RunFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_run, container, false)
+        binding.apply {
+            lifecycleOwner = this@RunFragment
+            timerViewModel = TimerViewModel
+            state.timerViewModel = TimerViewModel
+        }
+
         return binding.root
     }
 
@@ -61,16 +68,18 @@ class RunFragment : Fragment() {
     }
 
 
-
-
-
     private fun setUI(){
         setPauseButton()
         setMapReady()
     }
 
     private fun setPauseButton() {
+        binding.pauseButton.setOnClickListener {
+            TimerViewModel.timerPause()
+        }
+
         binding.pauseButton.setOnLongClickListener {
+            TimerViewModel.timerStop()
             val action = RunFragmentDirections.actionRunFragmentToMainFragment()
             requireActivity().findNavController(R.id.nav_host_fragment).navigate(action)
             true
