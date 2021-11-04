@@ -7,9 +7,9 @@
 
     <fragment
         android:id="@+id/mapFragment"
-        android:name="busan.swidea.gachijupging.view.MapFragment"
+        android:name="busan.swidea.gachijupging.view.StartFragment"
         android:label="fragment_map"
-        tools:layout="@layout/fragment_map" >
+        tools:layout="@layout/fragment_start" >
         <action
             android:id="@+id/action_runningFragment_to_recordFragment"
             app:destination="@id/recordFragment" />

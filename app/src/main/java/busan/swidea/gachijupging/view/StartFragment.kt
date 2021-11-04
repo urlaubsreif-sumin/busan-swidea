@@ -10,8 +10,9 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import busan.swidea.gachijupging.R
-import busan.swidea.gachijupging.databinding.FragmentMapBinding
+import busan.swidea.gachijupging.databinding.FragmentStartBinding
 import busan.swidea.gachijupging.model.Map
 
 /**
@@ -19,9 +20,9 @@ import busan.swidea.gachijupging.model.Map
  * Use the [RunningFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class MapFragment : Fragment() {
+class StartFragment : Fragment() {
 
-    private lateinit var binding: FragmentMapBinding
+    private lateinit var binding: FragmentStartBinding
     private lateinit var map: Map
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,13 +30,12 @@ class MapFragment : Fragment() {
 
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate<FragmentMapBinding>(inflater,
-            R.layout.fragment_map, container, false)
+        binding = DataBindingUtil.inflate<FragmentStartBinding>(inflater,
+            R.layout.fragment_start, container, false)
         return binding.root
     }
 
@@ -44,6 +44,7 @@ class MapFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.mapView.onCreate(savedInstanceState)
         setMapReady()
+        setStartButton()
     }
 
     override fun onResume() {
@@ -71,11 +72,9 @@ class MapFragment : Fragment() {
         binding.mapView.onLowMemory()
     }
 
-
-
     private fun setMapReady() {
         if(hasPermission()) {
-            map = Map()
+            map = Map
             binding.mapView.getMapAsync(map.mapReadyCallback)
         }
     }
@@ -120,6 +119,13 @@ class MapFragment : Fragment() {
         requestPermissionLauncher.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
         requestPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         return isPermit
+    }
+
+    private fun setStartButton() {
+        binding.startBtn.setOnClickListener{
+            val action = MainFragmentDirections.actionMainFragmentToRunFragment()
+            requireActivity().findNavController(R.id.nav_host_fragment).navigate(action)
+        }
     }
 
 

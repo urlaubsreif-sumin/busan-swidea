@@ -17,7 +17,19 @@
         <action
             android:id="@+id/action_mainFragment_to_run_graph"
             app:destination="@id/run_graph" />
+        <action
+            android:id="@+id/action_mainFragment_to_runFragment"
+            app:destination="@id/runFragment" />
     </fragment>
     <include app:graph="@navigation/run_graph" />
+    <fragment
+        android:id="@+id/runFragment"
+        android:name="busan.swidea.gachijupging.view.RunFragment"
+        android:label="fragment_run"
+        tools:layout="@layout/fragment_run" >
+        <action
+            android:id="@+id/action_runFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 
 </navigation>

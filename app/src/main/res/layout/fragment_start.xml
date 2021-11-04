@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        tools:context=".view.MapFragment"
+        tools:context=".view.StartFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -14,9 +14,6 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent"/>
 
-        <include layout="@layout/running_state_view"
-            android:id="@+id/running_state_view"
-            android:elevation="10dp"/>
 
         <Button
             android:id="@+id/start_btn"
