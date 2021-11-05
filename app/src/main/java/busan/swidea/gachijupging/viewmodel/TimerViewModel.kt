@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 object TimerViewModel: ViewModel() {
     private val intervalMs = 1000L
     var count = Time()
+    var paused = false
     private lateinit var job: Job
 
 
@@ -26,17 +27,20 @@ object TimerViewModel: ViewModel() {
                 //Log.d("TEST", "${count.hour.value} ${count.minute.value} ${count.second.value}")
             }
         }
+        paused = false
     }
 
     fun timerPause() {
         if(::job.isInitialized) {
             job.cancel()
         }
+        paused = true
     }
 
     fun timerStop() {
         timerPause()
         count = Time()
+        paused = true
     }
 
     class Time() {

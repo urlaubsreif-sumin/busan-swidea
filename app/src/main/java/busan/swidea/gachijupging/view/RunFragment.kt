@@ -2,6 +2,7 @@ package busan.swidea.gachijupging.view
 
 import android.content.Context
 import android.location.LocationManager
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -75,12 +76,22 @@ class RunFragment : Fragment() {
 
     private fun setUI(){
         setPauseButton()
+        setPlayButton()
         setMapReady()
     }
 
     private fun setPauseButton() {
         binding.pauseButton.setOnClickListener {
             TimerViewModel.timerPause()
+            binding.pausedView.apply {
+                visibility = View.VISIBLE
+            }
+            binding.pauseButton.apply {
+                visibility = View.GONE
+            }
+            binding.playButton.apply {
+                visibility = View.VISIBLE
+            }
         }
 
         binding.pauseButton.setOnLongClickListener {
@@ -88,6 +99,21 @@ class RunFragment : Fragment() {
             val action = RunFragmentDirections.actionRunFragmentToStopDialogFragment()
             requireActivity().findNavController(R.id.nav_host_fragment).navigate(action)
             true
+        }
+    }
+
+    private fun setPlayButton() {
+        binding.playButton.setOnClickListener {
+            TimerViewModel.timerStart()
+            binding.playButton.apply {
+                visibility = View.GONE
+            }
+            binding.pauseButton.apply{
+                visibility = View.VISIBLE
+            }
+            binding.pausedView.apply {
+                visibility = View.GONE
+            }
         }
     }
 
