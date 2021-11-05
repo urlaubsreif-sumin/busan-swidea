@@ -1,7 +1,9 @@
 package busan.swidea.gachijupging.view
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +18,8 @@ import busan.swidea.gachijupging.R
 import busan.swidea.gachijupging.databinding.FragmentStartBinding
 import busan.swidea.gachijupging.model.Map
 import busan.swidea.gachijupging.viewmodel.TimerViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 /**
  * A simple [Fragment] subclass.
@@ -83,6 +87,8 @@ class StartFragment : Fragment() {
     private fun setMapReady() {
         if(hasPermission()) {
             map = Map
+            map.setLocationManager(getLocationManager())
+            map.setFusedLocationClient(getFusedLocationClient())
             binding.mapView.getMapAsync(map.mapReadyCallback)
         }
     }
@@ -129,17 +135,20 @@ class StartFragment : Fragment() {
         return isPermit
     }
 
+    private fun getLocationManager(): LocationManager {
+        return requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
+
+    private fun getFusedLocationClient(): FusedLocationProviderClient {
+        return LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
     private fun setStartButton() {
         binding.startBtn.setOnClickListener{
             val action = MainFragmentDirections.actionMainFragmentToRunFragment()
             requireActivity().findNavController(R.id.nav_host_fragment).navigate(action)
             TimerViewModel.timerStart()
         }
-    }
-
-    private fun setTimerStart() {
-        val timerViewModel = ViewModelProvider(requireActivity()).get(TimerViewModel::class.java)
-
     }
 
 

@@ -1,5 +1,7 @@
 package busan.swidea.gachijupging.view
 
+import android.content.Context
+import android.location.LocationManager
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -59,6 +61,7 @@ class RunFragment : Fragment() {
 
     override fun onDestroy() {
         binding.mapView.onDestroy()
+        TimerViewModel.timerStop()
         super.onDestroy()
     }
 

@@ -9,8 +9,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 object TimerViewModel: ViewModel() {
-    private var interval: Long = 1
-    var count = MutableLiveData<Long>(0)
+    private val intervalMs = 1000L
+    var count = Time()
     private lateinit var job: Job
 
 
@@ -21,9 +21,9 @@ object TimerViewModel: ViewModel() {
 
         job = viewModelScope.launch {
             while(true) {
-                delay(1000)
-                increaseTimerCount()
-                Log.d("TEST", "TimerIncreased" + count.value.toString())
+                delay(intervalMs)
+                count.increaseOneSecond()
+                //Log.d("TEST", "${count.hour.value} ${count.minute.value} ${count.second.value}")
             }
         }
     }
@@ -36,14 +36,38 @@ object TimerViewModel: ViewModel() {
 
     fun timerStop() {
         timerPause()
-        initTimerCount()
+        count = Time()
     }
 
-    private fun initTimerCount() {
-        count.value = 0
-    }
+    class Time() {
+        val hour = MutableLiveData<Int>(0)
+        val minute = MutableLiveData<Int>(0)
+        val second = MutableLiveData<Int>(0)
 
-    private fun increaseTimerCount() {
-        count.value = count.value?.plus(interval)
+        fun increaseOneSecond() {
+            if(second.value!! >= 59) {
+                second.value = 0
+                increaseMinute()
+            } else {
+                second.value = second.value!! + 1
+            }
+        }
+
+        private fun increaseMinute() {
+            if(minute.value!! >= 59) {
+                minute.value = 0
+                increaseHour()
+            } else {
+                minute.value = minute.value!! + 1
+            }
+        }
+
+        private fun increaseHour() {
+            if(hour.value!! >= 24) {
+                hour.value = 0
+            } else {
+                hour.value = hour.value!! + 1
+            }
+        }
     }
 }
