@@ -49,6 +49,7 @@ class RunFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         binding.mapView.onResume()
+        TimerViewModel.timerStart()
     }
 
     override fun onStop() {
@@ -63,7 +64,6 @@ class RunFragment : Fragment() {
 
     override fun onDestroy() {
         binding.mapView.onDestroy()
-        TimerViewModel.timerStop()
         super.onDestroy()
     }
 
@@ -84,8 +84,8 @@ class RunFragment : Fragment() {
         }
 
         binding.pauseButton.setOnLongClickListener {
-            TimerViewModel.timerStop()
-            val action = RunFragmentDirections.actionRunFragmentToMainFragment()
+            TimerViewModel.timerPause()
+            val action = RunFragmentDirections.actionRunFragmentToStopDialogFragment()
             requireActivity().findNavController(R.id.nav_host_fragment).navigate(action)
             true
         }

@@ -149,7 +149,6 @@ class StartFragment : Fragment() {
         binding.startBtn.setOnClickListener{
             val action = MainFragmentDirections.actionMainFragmentToRunFragment()
             requireActivity().findNavController(R.id.nav_host_fragment).navigate(action)
-            TimerViewModel.timerStart()
         }
     }
 

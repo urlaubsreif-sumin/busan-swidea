@@ -27,9 +27,13 @@ class Map(var lifecycle: Lifecycle): LifecycleObserver {
     private lateinit var locationCallback: LocationCallback
 
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onStart(){
+        initLocation()
+    }
+
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume(){
-        initLocation()
         requestLocation()
     }
 
