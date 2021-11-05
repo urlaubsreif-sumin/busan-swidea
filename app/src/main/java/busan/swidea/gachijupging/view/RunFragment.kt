@@ -13,6 +13,8 @@ import busan.swidea.gachijupging.R
 import busan.swidea.gachijupging.databinding.FragmentRunBinding
 import busan.swidea.gachijupging.model.Map
 import busan.swidea.gachijupging.viewmodel.TimerViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 
 class RunFragment : Fragment() {
@@ -90,9 +92,23 @@ class RunFragment : Fragment() {
     }
 
     private fun setMapReady() {
-        map = Map
+        map = Map(lifecycle)
+        viewLifecycleOwner.lifecycle.addObserver(map)
+
+        map.setLocationManager(getLocationManager())
+        map.setFusedLocationClient(getFusedLocationClient())
         binding.mapView.getMapAsync(map.mapReadyCallback)
     }
+
+    private fun getLocationManager(): LocationManager {
+        return requireActivity().getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    }
+
+    private fun getFusedLocationClient(): FusedLocationProviderClient {
+        return LocationServices.getFusedLocationProviderClient(requireActivity())
+    }
+
+
 
     companion object {
 

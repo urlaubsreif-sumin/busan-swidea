@@ -1,22 +1,22 @@
 package busan.swidea.gachijupging.model
 
 import android.annotation.SuppressLint
-import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
-import android.location.LocationRequest
 import android.os.Looper
-import android.util.Log
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.OnLifecycleEvent
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.gms.tasks.Task
 
-object Map : LocationListener {
+class Map(var lifecycle: Lifecycle): LifecycleObserver {
     val mapReadyCallback = MapReadyCallback
     private lateinit var locationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -24,7 +24,19 @@ object Map : LocationListener {
     private val map by lazy {
         mapReadyCallback.googleMap
     }
+    private lateinit var locationCallback: LocationCallback
 
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    fun onResume(){
+        initLocation()
+        requestLocation()
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun onPause(){
+        removeLocationRequest()
+    }
 
 
     fun setLocationManager(manager: LocationManager) {
@@ -37,16 +49,18 @@ object Map : LocationListener {
 
 
     private fun moveCameraToPosition(position: LatLng) {
-        if(map != null) {
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                position, CAMERA_ZOOM_LEVEL
-            ))
+        if (map != null) {
+            map.animateCamera(
+                CameraUpdateFactory.newLatLngZoom(
+                    position, CAMERA_ZOOM_LEVEL
+                )
+            )
         }
     }
 
     private fun addMarkerOnMap(locationLatLng: LatLng, title: String?, snippet: String?) {
-        if(map!= null) {
-            val markerOpt = MarkerOptions().apply{
+        if (map != null) {
+            val markerOpt = MarkerOptions().apply {
                 position(locationLatLng)
                 title(title)
                 snippet(snippet)
@@ -55,16 +69,50 @@ object Map : LocationListener {
         }
     }
 
-    override fun onLocationChanged(location: Location) {
-        val locationLatLng = LatLng(
-            location.latitude,
-            location.longitude
-        )
+    @SuppressLint("MissingPermission")
+    private fun initLocation() {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location ->
+                if (location == null) {
 
+                } else {
+                    val locationLatLng = LatLng(location.latitude, location.longitude)
+                    moveCameraToPosition(locationLatLng)
+                }
+            }
+            .addOnFailureListener {
+
+            }
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun requestLocation() {
+        val locationRequest = LocationRequest.create()
+        locationRequest.run {
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+            interval = 1000
+        }
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult) {
+                super.onLocationResult(locationResult)
+
+            }
+        }
+
+        fusedLocationClient.requestLocationUpdates(
+            locationRequest,
+            locationCallback,
+            Looper.myLooper()
+        )
+    }
+
+    private fun removeLocationRequest() {
+        fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
 
-    object MapReadyCallback: OnMapReadyCallback {
+    object MapReadyCallback : OnMapReadyCallback {
         lateinit var googleMap: GoogleMap
 
         override fun onMapReady(map: GoogleMap) {
@@ -74,21 +122,13 @@ object Map : LocationListener {
 
         @SuppressLint("MissingPermission")
         fun setGoogleMapUI() {
-            if(googleMap != null) {
+            if (googleMap != null) {
                 googleMap.isMyLocationEnabled = true
                 googleMap.uiSettings.isZoomGesturesEnabled = true
                 googleMap.uiSettings.isZoomControlsEnabled = true
-
-                val seoul = LatLng(37.56, 126.97)
-                addMarkerOnMap(seoul, "seoul", "capital city of SouthKorea")
-                moveCameraToPosition(seoul)
-
-                //moveCameraToPosition(LocationLatLngEntity(0f, 0f))
-                //startLocationService()
             }
         }
     }
-
 
 
 }

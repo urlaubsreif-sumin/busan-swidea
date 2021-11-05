@@ -86,7 +86,9 @@ class StartFragment : Fragment() {
 
     private fun setMapReady() {
         if(hasPermission()) {
-            map = Map
+            map = Map(lifecycle)
+            viewLifecycleOwner.lifecycle.addObserver(map)
+
             map.setLocationManager(getLocationManager())
             map.setFusedLocationClient(getFusedLocationClient())
             binding.mapView.getMapAsync(map.mapReadyCallback)
