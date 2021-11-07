@@ -12,11 +12,10 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import busan.swidea.gachijupging.R
 import busan.swidea.gachijupging.databinding.FragmentStartBinding
-import busan.swidea.gachijupging.model.Map
+import busan.swidea.gachijupging.model.GoogleMap
 import busan.swidea.gachijupging.viewmodel.TimerViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -29,7 +28,7 @@ import com.google.android.gms.location.LocationServices
 class StartFragment : Fragment() {
 
     private lateinit var binding: FragmentStartBinding
-    private lateinit var map: Map
+    private lateinit var map: GoogleMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,7 +85,7 @@ class StartFragment : Fragment() {
 
     private fun setMapReady() {
         if(hasPermission()) {
-            map = Map(lifecycle)
+            map = GoogleMap(lifecycle)
             viewLifecycleOwner.lifecycle.addObserver(map)
 
             map.setLocationManager(getLocationManager())

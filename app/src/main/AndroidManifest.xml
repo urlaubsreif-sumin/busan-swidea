@@ -14,10 +14,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.GachiJupging"
+        android:usesCleartextTraffic = "true"
         >
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyCNtqynTVdsZdhZCRw6faSwc7hmZpq4d7g" />
+
         <activity android:name=".view.MainActivity"
                 android:exported="true">
             <intent-filter>

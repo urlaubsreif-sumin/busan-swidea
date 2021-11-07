@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.ui.NavigationUI
 import busan.swidea.gachijupging.databinding.ActivityMainBinding
+import busan.swidea.gachijupging.model.NetworkHelper
+import com.android.volley.toolbox.Volley
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,7 +19,11 @@ class MainActivity : AppCompatActivity() {
             lifecycleOwner = this@MainActivity
         }
         setContentView(binding.root)
+        setNetwork()
+    }
 
+    private fun setNetwork() {
+        NetworkHelper.requestQueue = Volley.newRequestQueue(applicationContext)
     }
 
 }

@@ -16,7 +16,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
-class Map(var lifecycle: Lifecycle): LifecycleObserver {
+class GoogleMap(var lifecycle: Lifecycle): LifecycleObserver {
     val mapReadyCallback = MapReadyCallback
     private lateinit var locationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
@@ -62,16 +62,15 @@ class Map(var lifecycle: Lifecycle): LifecycleObserver {
         }
     }
 
-    private fun addMarkerOnMap(locationLatLng: LatLng, title: String?, snippet: String?) {
-        if (map != null) {
-            val markerOpt = MarkerOptions().apply {
-                position(locationLatLng)
-                title(title)
-                snippet(snippet)
+    private fun addClickListener() {
+        if(map != null) {
+            map.setOnMapClickListener { location ->
+                addMarkerOnMap(location, "", "")
             }
-            map.addMarker(markerOpt)
         }
     }
+
+
 
     @SuppressLint("MissingPermission")
     private fun initLocation() {
@@ -116,12 +115,15 @@ class Map(var lifecycle: Lifecycle): LifecycleObserver {
     }
 
 
-    object MapReadyCallback : OnMapReadyCallback {
+    companion object MapReadyCallback : OnMapReadyCallback {
         lateinit var googleMap: GoogleMap
 
         override fun onMapReady(map: GoogleMap) {
             googleMap = map
             setGoogleMapUI()
+
+            setTrashcans()
+            setHotspots()
         }
 
         @SuppressLint("MissingPermission")
@@ -130,6 +132,31 @@ class Map(var lifecycle: Lifecycle): LifecycleObserver {
                 googleMap.isMyLocationEnabled = true
                 googleMap.uiSettings.isZoomGesturesEnabled = true
                 googleMap.uiSettings.isZoomControlsEnabled = true
+            }
+        }
+
+        private fun setTrashcans() {
+            val trashcans = TrashcanNetworkHelper.getTrashcans()
+            for(t in trashcans) {
+                addMarkerOnMap(t, "쓰레기통", "")
+            }
+        }
+
+        private fun setHotspots() {
+            val hotspots = HotspotNetworkHelper.getHotspots()
+            for(h in hotspots){
+                addMarkerOnMap(h, "핫스팟", "")
+            }
+        }
+
+        private fun addMarkerOnMap(locationLatLng: LatLng, title: String?, snippet: String?) {
+            if (googleMap != null) {
+                val markerOpt = MarkerOptions().apply {
+                    position(locationLatLng)
+                    title(title)
+                    snippet(snippet)
+                }
+                googleMap.addMarker(markerOpt)
             }
         }
     }
