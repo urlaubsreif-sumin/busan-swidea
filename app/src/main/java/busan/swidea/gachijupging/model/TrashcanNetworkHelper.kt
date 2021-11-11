@@ -14,11 +14,15 @@ object TrashcanNetworkHelper: NetworkHelper() {
     private val trashcanList = mutableListOf<LatLng>()
 
     fun getTrashcans(): List<LatLng> {
-        sendRequest()
+        sendGetRequest()
         return trashcanList
     }
 
-    override fun makeRequest(): StringRequest {
+    fun addTrashcan(locationLatLng: LatLng) {
+        sendPostRequest(locationLatLng)
+    }
+
+    override fun makeGetRequest(): StringRequest {
 
         val request = object : StringRequest(Request.Method.GET, url,
             Response.Listener { response ->
@@ -37,6 +41,26 @@ object TrashcanNetworkHelper: NetworkHelper() {
         return request
     }
 
+    override fun makePostRequest(latitude: Double, longitude: Double): StringRequest {
+        val request = object : StringRequest(Request.Method.POST, url,
+            Response.Listener { response ->
+                Log.d("TEST", response)
+
+            }, Response.ErrorListener { error ->
+                Log.d("ERROR", "${error.networkResponse.statusCode}")
+            }) {
+            // request 시 key, value 보낼 때
+            override fun getParams(): Map<String, String> {
+                val params = HashMap<String, String>()
+                params["longitude"] = longitude.toString()
+                params["latitude"] = latitude.toString()
+                return params
+            }
+
+        }
+        return request
+    }
+
     override fun processResponse(response: String) {
         val gson = Gson()
         val itemType = object: TypeToken<List<LocationGson>>() {}.type
@@ -46,17 +70,13 @@ object TrashcanNetworkHelper: NetworkHelper() {
 
         for(location in locations) {
             val latitude = location.latitude
-            val longitude = location.longtitude
+            val longitude = location.longitude
             val latLngEntity = LatLng(latitude, longitude)
 
             trashcanList.add(latLngEntity)
         }
     }
 
-    fun processResponse2(response: String) {
-        val gson = Gson()
-        val test = gson.fromJson(response, TestGson::class.java)
-        Log.d("TEST", "${test.result}")
-    }
+
 
 }

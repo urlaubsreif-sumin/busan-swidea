@@ -3,6 +3,8 @@ package busan.swidea.gachijupging.model
 import android.annotation.SuppressLint
 import android.location.LocationManager
 import android.os.Looper
+import android.os.Parcel
+import android.os.Parcelable
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
@@ -21,6 +23,7 @@ class GoogleMap(var lifecycle: Lifecycle): LifecycleObserver {
     private lateinit var locationManager: LocationManager
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val CAMERA_ZOOM_LEVEL = 16f
+    private lateinit var currentLocation: LatLng
     private val map by lazy {
         mapReadyCallback.googleMap
     }
@@ -62,16 +65,6 @@ class GoogleMap(var lifecycle: Lifecycle): LifecycleObserver {
         }
     }
 
-    private fun addClickListener() {
-        if(map != null) {
-            map.setOnMapClickListener { location ->
-                addMarkerOnMap(location, "", "")
-            }
-        }
-    }
-
-
-
     @SuppressLint("MissingPermission")
     private fun initLocation() {
         fusedLocationClient.lastLocation
@@ -99,7 +92,8 @@ class GoogleMap(var lifecycle: Lifecycle): LifecycleObserver {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
-
+                val location = locationResult.lastLocation
+                currentLocation = LatLng(location.latitude, location.longitude)
             }
         }
 
@@ -114,6 +108,34 @@ class GoogleMap(var lifecycle: Lifecycle): LifecycleObserver {
         fusedLocationClient.removeLocationUpdates(locationCallback)
     }
 
+    fun addTrashcanOnMap() {
+        if (map != null) {
+            val markerOpt = MarkerOptions().apply {
+                position(currentLocation)
+                title("쓰레기통")
+            }
+            TrashcanNetworkHelper.addTrashcan(currentLocation)
+            refreshMap()
+        }
+    }
+
+    fun addHotspotOnMap() {
+        if(map != null) {
+            val markerOpt = MarkerOptions().apply {
+                position(currentLocation)
+                title("핫스팟")
+            }
+            HotspotNetworkHelper.addHotspot(currentLocation)
+            refreshMap()
+        }
+    }
+
+   private fun refreshMap() {
+        map.clear()
+        setTrashcans()
+        setHotspots()
+    }
+
 
     companion object MapReadyCallback : OnMapReadyCallback {
         lateinit var googleMap: GoogleMap
@@ -124,6 +146,7 @@ class GoogleMap(var lifecycle: Lifecycle): LifecycleObserver {
 
             setTrashcans()
             setHotspots()
+            addClickListener()
         }
 
         @SuppressLint("MissingPermission")
@@ -132,6 +155,14 @@ class GoogleMap(var lifecycle: Lifecycle): LifecycleObserver {
                 googleMap.isMyLocationEnabled = true
                 googleMap.uiSettings.isZoomGesturesEnabled = true
                 googleMap.uiSettings.isZoomControlsEnabled = true
+            }
+        }
+
+        private fun addClickListener() {
+            if(googleMap != null) {
+                googleMap.setOnMapClickListener { location ->
+                    addMarkerOnMap(location, "", "")
+                }
             }
         }
 
@@ -159,6 +190,8 @@ class GoogleMap(var lifecycle: Lifecycle): LifecycleObserver {
                 googleMap.addMarker(markerOpt)
             }
         }
+
+
     }
 
 

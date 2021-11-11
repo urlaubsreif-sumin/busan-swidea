@@ -23,6 +23,30 @@
             android:layout_height="match_parent"
             android:layout_width="match_parent" />
 
+        <Button
+            android:id="@+id/addTrashcanButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/add_button_shape"
+            android:layout_margin="16dp"
+            android:text="+쓰레기통"
+            android:elevation="10dp"
+            android:textSize="17sp"
+            app:layout_constraintTop_toBottomOf="@+id/state"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/addHotspotButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/add_button_shape"
+            android:layout_margin="16dp"
+            android:text="+핫스팟"
+            android:elevation="10dp"
+            android:textSize="17sp"
+            app:layout_constraintTop_toBottomOf="@+id/state"
+            app:layout_constraintStart_toEndOf="@+id/addTrashcanButton"/>
+
         <View
             android:id="@+id/paused_view"
             android:layout_width="match_parent"

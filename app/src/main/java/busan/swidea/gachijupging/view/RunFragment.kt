@@ -7,12 +7,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import busan.swidea.gachijupging.R
 import busan.swidea.gachijupging.databinding.FragmentRunBinding
 import busan.swidea.gachijupging.model.GoogleMap
 import busan.swidea.gachijupging.model.NetworkHelper
+import busan.swidea.gachijupging.viewmodel.MapViewModel
 import busan.swidea.gachijupging.viewmodel.TimerViewModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -21,10 +25,11 @@ import com.google.android.gms.location.LocationServices
 class RunFragment : Fragment() {
 
     private lateinit var binding: FragmentRunBinding
-    private lateinit var map: GoogleMap
+    private val mapViewModel : MapViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mapViewModel.setMapWithLifecycle(lifecycle)
     }
 
     override fun onCreateView(
@@ -77,6 +82,7 @@ class RunFragment : Fragment() {
     private fun setUI(){
         setPauseButton()
         setPlayButton()
+        setAddButtons()
         setMapReady()
     }
 
@@ -117,13 +123,28 @@ class RunFragment : Fragment() {
         }
     }
 
+    private fun setAddButtons() {
+        binding.addTrashcanButton.setOnClickListener {
+            val action = RunFragmentDirections.actionRunFragmentToAddTrashcanDialogFragment()
+            requireActivity().findNavController(R.id.nav_host_fragment).navigate(action)
+        }
+
+        binding.addHotspotButton.setOnClickListener {
+            val action = RunFragmentDirections.actionRunFragmentToAddHotspotDialogFragment()
+            requireActivity().findNavController(R.id.nav_host_fragment).navigate(action)
+        }
+    }
+
     private fun setMapReady() {
-        map = GoogleMap(lifecycle)
+        val map = mapViewModel.map
         viewLifecycleOwner.lifecycle.addObserver(map)
 
-        map.setLocationManager(getLocationManager())
-        map.setFusedLocationClient(getFusedLocationClient())
-        binding.mapView.getMapAsync(map.mapReadyCallback)
+        map.apply {
+            setLocationManager(getLocationManager())
+            setFusedLocationClient(getFusedLocationClient())
+        }
+
+        binding.mapView.getMapAsync(mapViewModel.map.mapReadyCallback)
     }
 
     private fun getLocationManager(): LocationManager {

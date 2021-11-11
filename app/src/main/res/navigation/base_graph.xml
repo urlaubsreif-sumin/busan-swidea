@@ -30,6 +30,14 @@
         <action
             android:id="@+id/action_runFragment_to_stopDialogFragment"
             app:destination="@id/stopDialogFragment" />
+        <action
+            android:id="@+id/action_runFragment_to_addHotspotDialogFragment"
+            app:destination="@id/addHotspotDialogFragment">
+        </action>
+        <action
+            android:id="@+id/action_runFragment_to_addTrashcanDialogFragment"
+            app:destination="@id/addTrashcanDialogFragment">
+        </action>
     </fragment>
     <dialog
         android:id="@+id/stopDialogFragment"
@@ -41,6 +49,24 @@
         <action
             android:id="@+id/action_stopDialogFragment_to_runFragment"
             app:destination="@id/runFragment" />
+    </dialog>
+    <dialog
+        android:id="@+id/addTrashcanDialogFragment"
+        android:name="busan.swidea.gachijupging.view.AddTrashcanDialogFragment"
+        android:label="AddTrashcanDialogFragment" >
+        <action
+            android:id="@+id/action_addTrashcanDialogFragment_to_runFragment"
+            app:destination="@id/runFragment">
+        </action>
+    </dialog>
+    <dialog
+        android:id="@+id/addHotspotDialogFragment"
+        android:name="busan.swidea.gachijupging.view.AddHotspotDialogFragment"
+        android:label="AddHotspotDialogFragment" >
+        <action
+            android:id="@+id/action_addHotspotDialogFragment_to_runFragment"
+            app:destination="@id/runFragment">
+        </action>
     </dialog>
 
 </navigation>

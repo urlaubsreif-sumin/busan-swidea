@@ -1,15 +1,9 @@
 package busan.swidea.gachijupging.model
 
 import android.util.Log
-import com.android.volley.AuthFailureError
-import com.android.volley.Request
 import com.android.volley.RequestQueue
-import com.android.volley.Response
 import com.android.volley.toolbox.StringRequest
 import com.google.android.gms.maps.model.LatLng
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import kotlin.jvm.Throws
 
 abstract class NetworkHelper {
 
@@ -17,19 +11,30 @@ abstract class NetworkHelper {
         lateinit var requestQueue: RequestQueue
     }
 
-    fun sendRequest() {
+    fun sendGetRequest() {
 
         if(requestQueue != null) {
-                val request = makeRequest()
+            val request = makeGetRequest()
 
-                request.setShouldCache(false)
-                requestQueue.add(request)
-                Log.d("TEST", "sendRequest")
-            }
-
+            request.setShouldCache(false)
+            requestQueue.add(request)
+            Log.d("TEST", "sendGetRequest")
         }
+    }
 
-    abstract fun makeRequest(): StringRequest
+    fun sendPostRequest(latlng: LatLng) {
+        if(requestQueue != null) {
+            val request = makePostRequest(latlng.latitude, latlng.longitude)
+
+            request.setShouldCache(false)
+            requestQueue.add(request)
+            Log.d("TEST", "sendPostRequest")
+        }
+    }
+
+    abstract fun makeGetRequest(): StringRequest
+
+    abstract fun makePostRequest(latitude: Double, longitude: Double): StringRequest
 
     abstract fun processResponse(response: String)
 
