@@ -9,3 +9,6 @@
 * 대회 웹사이트: http://www.busan-swidea.com
 ---
 
+### 제출 자료
+
+* [제안서](https://drive.google.com/file/d/1ZQifKj-1xrvmAsOI_1kJkGvga76oWfct/view?usp=sharing)
